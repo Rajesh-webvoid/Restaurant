@@ -74,12 +74,36 @@ WSGI_APPLICATION = 'Restaurant.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'djongo',
+        'NAME': 'Restaurant',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#         'NAME': 'Restaurant',  # Your MongoDB database name
+#         'CLIENT': {
+#             'host': 'mongodb://localhost:27017/',  # MongoDB connection URL
+#             'port': 27017,
+#             # 'username': 'your_username',     # Uncomment if using authentication
+#             # 'password': 'your_password',     # Uncomment if using authentication
+#             # 'authSource': 'admin',           # Uncomment if using authentication
+#             # 'authMechanism': 'SCRAM-SHA-1',  # Optional, specify if needed
+#         }
+#     }
+# }
+
+
+
 
 
 # Password validation
@@ -115,8 +139,14 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
+# by Default it is
+# STATIC_URL = 'static/'
 
+#for macos/windows
+import os
 STATIC_URL = 'static/'
+STATICFILES_DIRS=(
+    os.path.join(BASE_DIR,"static"),)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
