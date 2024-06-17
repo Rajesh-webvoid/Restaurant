@@ -1,17 +1,83 @@
-{% extends 'base_templates/base.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Restaurant List</title>
+</head>
+<body>
+    <h1>Restaurant List</h1>
 
-{% block favicon %}
-{% endblock favicon %}
+    <!-- Form to fetch user location -->
+    <form id="locationForm" method="POST" action="{% url 'restaurant_list' %}">
+        {% csrf_token %}
+        <!-- <button id="fetchLocationBtn" type="button">Fetch My Location</button> -->
+        <input type="hidden" id="latitudeInput" name="latitude">
+        <input type="hidden" id="longitudeInput" name="longitude">
+        <button type="submit" id="submitBtn">Find Nearby Restaurants</button>
+        <p>Latitude: <span id="latitudeDisplay"></span></p>
+        <p>Longitude: <span id="longitudeDisplay"></span></p>
+    </form>
 
-{% block css %}
-{% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    <!-- Restaurant List -->
+    <h2>Displaying All Restaurants</h2>
+    <ul id="restaurantList">
+        {% for restaurant in restaurants %}
+            <li>
+                <a href="{% url 'restaurant_detail' restaurant.id %}">{{ restaurant.name }}</a> - {{ restaurant.address }}
+            </li>
+        {% endfor %}
+    </ul>
 
-{% endblock css %}
+    <div id="location"></div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        fetchUserLocation();
+        // Attach event listener to fetchLocationBtn
+        document.getElementById('fetchLocationBtn').addEventListener('click', fetchUserLocation);
 
-{% block body %}
-<!-- Index page Code Starts Here -->
-<h1>Index page </h1>
+        // Function to fetch user location
+        function fetchUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
 
-{% endblock body %}
+        // Success callback function for fetching location
+        function showPosition(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+
+            // Update hidden form fields
+            document.getElementById('latitudeInput').value = latitude;
+            document.getElementById('longitudeInput').value = longitude;
+
+            // Update UI with fetched coordinates
+            document.getElementById("latitudeDisplay").textContent = latitude.toFixed(6); // Limit to 6 decimal places for display
+            document.getElementById("longitudeDisplay").textContent = longitude.toFixed(6);
+
+            // Enable submit button
+            document.getElementById('submitBtn').disabled = false;
+        }
+
+        // Error callback function for fetching location
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("User denied the request for Geolocation.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                    alert("The request to get user location timed out.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("An unknown error occurred.");
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'djongo',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'webvoid',
 ]
+
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -83,25 +87,34 @@ WSGI_APPLICATION = 'Restaurant.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'Restaurant',
+        'NAME' : 'Restaurant',
+        # 'ENFORCE_SCHEMA': False,  # Sometimes helps to turn off schema enforcement
+        # 'CLIENT': {
+        #     'host': 'mongodb://localhost:27017/',  # e.g., 'localhost'
+        #     'port': 27017,    # e.g., 27017
+        # }
     }
 }
+# settings.py
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'djongo',
+        'NAME': 'djongo_test',
+    },
+}
+
 
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'djongo',
-#         'NAME': 'Restaurant',  # Your MongoDB database name
-#         'CLIENT': {
-#             'host': 'mongodb://localhost:27017/',  # MongoDB connection URL
-#             'port': 27017,
-#             # 'username': 'your_username',     # Uncomment if using authentication
-#             # 'password': 'your_password',     # Uncomment if using authentication
-#             # 'authSource': 'admin',           # Uncomment if using authentication
-#             # 'authMechanism': 'SCRAM-SHA-1',  # Optional, specify if needed
-#         }
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'Restaurant',
+#         'HOST': 'localhost',
+#         'USER': 'root',
+#         'PASSWORD': 'bala7699',
+#         'PORT': '3306'
 #     }
 # }
-
 
 
 
@@ -152,3 +165,11 @@ STATICFILES_DIRS=(
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+import os
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+

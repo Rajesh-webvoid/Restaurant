@@ -1,0 +1,47 @@
+{% extends 'base_templates/base.html' %}
+
+{% block favicon %}
+{% endblock favicon %}
+
+{% block css %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+
+{% endblock css %}
+
+
+{% block body %}
+<!-- Index page Code Starts Here -->
+<h1>Restaurant Details page </h1>
+    <h1>{{ restaurant.name }}</h1>
+    <p>{{ restaurant.address }}</p>
+    <p>{{ restaurant.mobile_number }}</p>
+    <p>{{ restaurant.email }}</p>
+    <p>{{ restaurant.image }}</p>
+    <p>{{ restaurant.latitude }}, {{ restaurant.longitude }}</p>
+
+    <h2>Restaurant Images</h2>
+    <ul>
+        {% for image in restaurant.images.all %}
+        <li>
+            <img src="{{ image.image.url }}" alt="Image of {{ restaurant.name }}" style="width:200px;height:200px;">
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Menu</h2>
+    <ul>
+        <ul>
+            {% for menu in restaurant.menus.all %}
+                <li>
+                    <a href="{% url 'menu_detail' menu.id %}">{{ menu.item_name }}</a> - ${{ menu.price }} <br> {{ menu.description }} <br> Rating: {{ menu.rating }} stars
+                </li>
+            {% endfor %}
+        </ul>
+
+    <a href="{% url 'restaurant_list' %}">Back to list</a>
+
+{{dataa.id}}
+
+
+{% endblock body %}
